@@ -1,16 +1,16 @@
 use std::process::Command;
 
+use crate::constants::{set_install_result, INSTALL_SCRIPT_URL};
+
 #[cfg(target_os = "macos")]
 pub fn install() {
-    use crate::constants::{set_install_result, INSTALL_SCRIPT_URL};
-
-	let mut command = Command::new("osascript");
-	command.arg("-e");
-	command.arg(format!("sudo curl \"{}\" | bash", INSTALL_SCRIPT_URL));
-	command.args(vec!["with", "administrator", "privileges"]);
+	let mut command = Command::new("curl");
+	command.arg(INSTALL_SCRIPT_URL);
+	command.args(vec!["|", "bash"]);
 
 	let output = command.output().unwrap();
 	set_install_result(output.status);
+	println!("{:?}", output);
 }
 
 #[cfg(target_os = "windows")]

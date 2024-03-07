@@ -2,9 +2,6 @@ use std::time::Duration;
 
 use eframe::egui::{self, include_image, text::LayoutJob, Button, Color32, Image, Label, Layout, RichText, ScrollArea, TextFormat, Vec2};
 
-#[cfg(target_os = "windows")]
-use eframe::egui::{CollapsingHeader, Grid};
-
 use egui_notify::Toasts;
 
 use crate::{constants::LICENSE, funcs};
@@ -45,30 +42,28 @@ impl eframe::App for Installer {
 
 			ui.separator();
 
+			let install_bt_size = Vec2::new(200.0, 30.0);
+
 			let bt = Button::new(
 				RichText::new("Install").heading()
-			).min_size(Vec2::new(200.0, 30.0));
+			).min_size(install_bt_size);
 			if ui.add(bt).clicked() {
 				if self.accept_license {
 					funcs::install();
 				} else {
-					self.toasts.error("Accept License before Installation")
+					self.toasts.error("Accept license before installation")
 						.set_duration(Some(Duration::from_secs(2)));
 				}
 			}
 
-			#[cfg(target_os = "windows")]
-			CollapsingHeader::new("Advanced Configs")
-				.id_source("configs")
-				.show(ui, |ui| {
-					Grid::new("grid")
-					.num_columns(2)
-					.show(ui, |ui| {
-						ui.label("Installation Path");
-						ui.label("/usr/local/sbin");
-						ui.end_row();
-					});
-				});
+			ui.add_space(5.0);
+
+			let custom_bt = Button::new(
+				RichText::new("Custom Install").heading()
+			).min_size(install_bt_size);
+			if ui.add(custom_bt).clicked() {
+				self.toasts.info("This function is not available now");
+			}
 		});
 		egui::CentralPanel::default().show(ctx, |ui| {
 			ui.checkbox(&mut self.accept_license, "Accept License");
