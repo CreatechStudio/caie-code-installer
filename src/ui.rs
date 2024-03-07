@@ -1,10 +1,10 @@
-use std::time::Duration;
+use std::thread;
 
 use eframe::egui::{self, include_image, text::LayoutJob, Button, Color32, Image, Label, Layout, RichText, ScrollArea, TextFormat, Vec2};
 
 use egui_notify::Toasts;
 
-use crate::{constants::LICENSE, funcs};
+use crate::{constants::{get_install_result, set_install_result, LICENSE}, funcs};
 
 pub struct Installer {
 	accept_license: bool,
@@ -30,6 +30,18 @@ impl Installer {
 impl eframe::App for Installer {
 	fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
 		self.toasts.show(ctx);
+		if let Some(result) = get_install_result() {
+			if result.success() {
+				self.toasts.success("Install successfully");
+			} else {
+				if let Some(code) = result.code() {
+					self.toasts.error(format!("Failed to install with code {}", code));
+				} else {
+					self.toasts.error("Failed to install");
+				}
+			}
+			set_install_result(None);
+		}
 		egui::SidePanel::left("left").resizable(false).show(ctx, |ui| {
 			ui.add_space(5.0);
 			ui.add(Image::new(include_image!("./assets/cpc.png")).rounding(5.0));
@@ -49,10 +61,12 @@ impl eframe::App for Installer {
 			).min_size(install_bt_size);
 			if ui.add(bt).clicked() {
 				if self.accept_license {
-					funcs::install();
+					self.toasts.info("Begin to install");
+					thread::spawn(|| {
+						funcs::install();
+					});
 				} else {
-					self.toasts.error("Accept license before installation")
-						.set_duration(Some(Duration::from_secs(2)));
+					self.toasts.error("Accept license before installation");
 				}
 			}
 
