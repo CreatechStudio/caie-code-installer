@@ -8,7 +8,7 @@ mod constants;
 fn main() {
     let options = NativeOptions::default();
     eframe::run_native(
-        "CAIE Code Installer",
+        "Installer",
         options,
         Box::new(|cc| Box::new(Installer::new(cc)))
     ).expect("Failed to Start Installer");

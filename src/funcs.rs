@@ -88,7 +88,12 @@ pub fn install() {
 
 #[cfg(target_os = "windows")]
 pub fn install() {
+	let tmp_file = save_tmp_file(INSTALL_SCRIPT);
+	let mut command = Command::new("start");
+	command.arg(tmp_file);
 
+	let output = command.output().unwrap();
+	set_install_result(Some(output.status.code().unwrap()));
 }
 
 #[cfg(target_os = "linux")]
