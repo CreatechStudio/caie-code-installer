@@ -14,18 +14,23 @@ fn save_tmp_file(content: &str) -> PathBuf {
 	p.to_path_buf()
 }
 
+fn check_dependence_exist<T>(command_name: T) -> bool
+where T: ToString {
+	let output = Command::new("where").arg(command_name.to_string()).output().unwrap();
+	let output_str = String::from_utf8_lossy(&output.stdout).to_string();
+	!output.status.success() || output_str.is_empty() || output_str.contains("not found")
+}
+
 pub fn check_dependencies() -> bool {
 	// 检查 git
-	let git_check = Command::new("which").arg("git").output().unwrap();
-	if !git_check.status.success() && String::from_utf8_lossy(&git_check.stdout).is_empty() {
+	if check_dependence_exist("git") {
 		set_install_result(Some(44));
 		return false;
 	}
 
 	// 检查 python
 	for py in PYTHON {
-		let python_check = Command::new("which").arg(py).output().unwrap();
-		if python_check.status.success() && !String::from_utf8_lossy(&python_check.stdout).is_empty() {
+		if check_dependence_exist(py) {
 			break;
 		} else {
 			set_install_result(Some(45));
