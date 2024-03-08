@@ -3,7 +3,7 @@ use std::io::Write;
 use std::process::Command;
 use std::path::{Path, PathBuf};
 
-use crate::constants::set_install_result;
+use crate::constants::{set_install_result, OS_TYPE};
 use crate::constants::INSTALL_SCRIPT;
 use crate::constants::PYTHON;
 
@@ -16,27 +16,62 @@ fn save_tmp_file(content: &str) -> PathBuf {
 
 pub fn check_dependencies() -> bool {
 	// Check if Xcode Command Line Tools is installed
-	let git_check = Command::new("git").arg("--version").output().unwrap();
-	let git_result = String::from_utf8(git_check.stdout).unwrap();
-	if !git_result.contains("git version") {
+	let git_check = Command::new("which").arg("git").output().unwrap();
+	if !git_check.status.success() && String::from_utf8_lossy(&git_check.stdout).is_empty() {
 		set_install_result(Some(44));
 		return false;
 	}
 	// Check if commands in PYTHON can be run
-	let mut python_check_flag = false;
 	for py in PYTHON {
-		if Command::new(py).arg("--version").output().is_ok() {
-			python_check_flag = true;
+		let python_check = Command::new("which").arg(py).output().unwrap();
+		if python_check.status.success() && !String::from_utf8_lossy(&python_check.stdout).is_empty() {
 			break;
+		} else {
+			set_install_result(Some(45));
+			return false;
 		}
 	}
 
-	if !python_check_flag {
-		set_install_result(Some(45));
-		return false;
+	true
+}
+
+pub fn dependencies_install() {
+    use crate::constants::get_install_result;
+
+	fn install_git() {
+		if  OS_TYPE == "windows" {
+			Command::new("winget")
+			.arg("install")
+			.arg("Git.Git")
+			.arg("--accept-package-agreements")
+			.arg("--accept-source-agreements");
+		} else if cfg!(target_os = "macos"){
+			Command::new("git")
+			.arg("--version");
+		}
+		
 	}
 
-	true
+	fn install_python() {
+		if OS_TYPE == "windows" {
+			Command::new("winget")
+			.arg("install")
+			.arg("Python.Python.3.12")
+			.arg("--accept-package-agreements")
+			.arg("--accept-source-agreements");
+		} else if cfg!(target_os = "macos"){
+			Command::new("python3")
+			.arg("--version");
+		}
+	}
+
+	if let Some(result) = get_install_result() {
+		if result == 44 {
+			install_git();
+		} else if result == 45{
+			install_python();
+		}
+	}
 }
 
 #[cfg(target_os = "macos")]

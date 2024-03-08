@@ -68,6 +68,8 @@ impl eframe::App for Installer {
 						});
 					} else {
 						self.toasts.error("Failed to check dependencies");
+						self.toasts.info("Start to install dependencies");
+						funcs::dependencies_install();
 					}
 				} else {
 					self.toasts.error("Accept license before installation");
