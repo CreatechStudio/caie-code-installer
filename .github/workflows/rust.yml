@@ -12,6 +12,8 @@ env:
 
 jobs:
   build:
+    permissions:
+      contents: write
 
     runs-on: ${{ matrix.config.os }}
 
@@ -42,11 +44,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      
       - name: Build
         run: cargo build --release
+      
       - name: Run tests
         run: cargo test --verbose
-      - name: Upload a Build Artifact
+      
       - uses: actions/upload-artifact@v4.3.1
-        with:
-          retention-days: 7
