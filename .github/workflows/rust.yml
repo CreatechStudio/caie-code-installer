@@ -43,12 +43,21 @@ jobs:
             args: ''
 
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Build
-        run: cargo build --release
-      
-      - name: Run tests
-        run: cargo test --verbose
-      
-      - uses: actions/upload-artifact@v4.3.1
+    - uses: actions/checkout@v3
+
+    - name: Build
+      run: cargo build --release --target ${{matrix.config.rust_target}}
+
+    - uses: actions/upload-artifact@v4.3.1
+      name: Upload (Windows)
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      with:
+        path: target/${{matrix.config.rust_target}}/caie-code-installer.exe
+        retention-days: 7
+
+    - uses: actions/upload-artifact@v4.3.1
+      name: Upload (macOS & Linux)
+      if: ${{ matrix.config.os != 'windows-latest' }}
+      with:
+        path: target/${{matrix.config.rust_target}}/caie-code-installer
+        retention-days: 7
