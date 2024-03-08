@@ -43,16 +43,7 @@ pub fn check_dependencies() -> bool {
 
 fn install_git() {
 	#[cfg(target_os = "windows")]
-	if check_dependence_exist("winget") {
-		Command::new("winget")
-			.arg("install")
-			.arg("Git.Git")
-			.arg("--accept-package-agreements")
-			.arg("--accept-source-agreements")
-			.spawn().unwrap();
-	} else {
-		opener::open("https://git-scm.com/").unwrap();
-	}
+	opener::open("https://git-scm.com/").unwrap();
 
 	#[cfg(target_os = "macos")]
 	Command::new("git")
@@ -62,16 +53,7 @@ fn install_git() {
 
 fn install_python() {
 	#[cfg(target_os = "windows")]
-	if check_dependence_exist("winget") {
-		Command::new("winget")
-			.arg("install")
-			.arg("Python.Python.3.12")
-			.arg("--accept-package-agreements")
-			.arg("--accept-source-agreements")
-			.spawn().unwrap();
-	} else {
-		opener::open("https://python.org/").unwrap();
-	}
+	opener::open("https://python.org/").unwrap();
 
 	#[cfg(target_os = "macos")]
 	Command::new("python3")
