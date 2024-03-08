@@ -9,7 +9,6 @@ pub const PYTHON : &[&str] = &[
     "python",
     "python3",
 ];
-pub const OS_TYPE: &str = std::env::consts::OS;
 
 #[cfg(target_os = "macos")]
 pub const INSTALL_SCRIPT: &str = include_str!("./scripts/macos-install.sh");
