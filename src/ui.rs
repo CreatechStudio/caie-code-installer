@@ -4,7 +4,7 @@ use eframe::egui::{self, include_image, text::LayoutJob, Button, Color32, Image,
 
 use egui_notify::Toasts;
 
-use crate::{constants::{get_install_result, set_install_result, LICENSE}, funcs};
+use crate::{constants::{get_desc_from_exit_code, get_install_result, set_install_result, LICENSE}, funcs};
 
 pub struct Installer {
 	accept_license: bool,
@@ -31,11 +31,11 @@ impl eframe::App for Installer {
 	fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
 		self.toasts.show(ctx);
 		if let Some(result) = get_install_result() {
-			if result.success() {
+			if result == 0 {
 				self.toasts.success("Install successfully");
 			} else {
-				if let Some(code) = result.code() {
-					self.toasts.error(format!("Failed to install with code {}", code));
+				if let Some(value) = get_desc_from_exit_code(result) {
+					self.toasts.error(value);
 				} else {
 					self.toasts.error("Failed to install");
 				}

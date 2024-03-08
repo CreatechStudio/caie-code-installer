@@ -16,13 +16,11 @@ fn save_tmp_file(content: &str) -> PathBuf {
 
 #[cfg(target_os = "macos")]
 pub fn check_dependencies() -> bool {
-	use std::{os::unix::process::ExitStatusExt, process::ExitStatus};
-
 	// Check if Xcode Command Line Tools is installed
 	let git_check = Command::new("git").arg("--version").output().unwrap();
 	let git_result = String::from_utf8(git_check.stdout).unwrap();
 	if !git_result.contains("git version") {
-		set_install_result(Some(ExitStatus::from_raw(44)));
+		set_install_result(Some(44));
 		return false;
 	}
 	// Check if commands in PYTHON can be run
@@ -35,7 +33,7 @@ pub fn check_dependencies() -> bool {
 	}
 
 	if !python_check_flag {
-		set_install_result(Some(ExitStatus::from_raw(45)));
+		set_install_result(Some(45));
 		return false;
 	}
 
@@ -74,12 +72,12 @@ pub fn install() {
 	command.arg(tmp_file);
 
 	let output = command.output().unwrap();
-	set_install_result(Some(output.status));
+	set_install_result(Some(output.status.code().unwrap()));
 }
 
 #[cfg(target_os = "windows")]
 pub fn install() {
-	
+
 }
 
 #[cfg(target_os = "linux")]

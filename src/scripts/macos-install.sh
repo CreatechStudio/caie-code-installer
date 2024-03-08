@@ -5,7 +5,7 @@ set -e
 
 # 获取当前执行目录
 username=$(/bin/ls -l /dev/console | /usr/bin/awk '{ print $3 }')
-current_dir="/Users/${username}/.cpc/CAIE_Code"
+current_dir="/Users/${username}/.cpc"
 
 # 删除旧目录，准备下载最新版本
 rm -rf ${current_dir}
