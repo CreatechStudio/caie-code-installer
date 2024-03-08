@@ -53,15 +53,17 @@ jobs:
       run: cargo build --release --target ${{matrix.config.rust_target}}
 
     - uses: actions/upload-artifact@v4.3.1
-      name: Upload (Windows)
+      name: Upload Windows Artifact
       if: ${{ matrix.config.os == 'windows-latest' }}
       with:
         path: target/${{matrix.config.rust_target}}/release/caie-code-installer.exe
         retention-days: 7
+        name: caie-code-installer-${{matrix.config.rust_target}}-${{GITHUB_SHA:0:9}}
 
     - uses: actions/upload-artifact@v4.3.1
-      name: Upload (macOS & Linux)
+      name: Upload (macOS & Linux) Artifact
       if: ${{ matrix.config.os != 'windows-latest' }}
       with:
         path: target/${{matrix.config.rust_target}}/release/caie-code-installer
         retention-days: 7
+        name: caie-code-installer-${{matrix.config.rust_target}}-${{GITHUB_SHA:0:9}}
