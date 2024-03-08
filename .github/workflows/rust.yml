@@ -1,0 +1,52 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - os: ubuntu-latest
+            rust_target: x86_64-unknown-linux-gnu
+            ext: ''
+            args: ''
+          - os: macos-latest
+            rust_target: x86_64-apple-darwin
+            ext: ''
+            args: ''
+          - os: macos-latest
+            rust_target: aarch64-apple-darwin
+            ext: ''
+            args: ''
+          - os: windows-latest
+            rust_target: x86_64-pc-windows-msvc
+            ext: ''
+            args: ''
+          - os: windows-latest
+            rust_target: aarch64-pc-windows-msvc
+            ext: ''
+            args: ''
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --release
+    - name: Run tests
+      run: cargo test --verbose
+    - name: Upload a Build Artifact
+    - uses: actions/upload-artifact@v4.3.1
+      with:
+        retention-days: 7
