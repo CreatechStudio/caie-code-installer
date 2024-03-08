@@ -13,6 +13,12 @@ pub const PYTHON : &[&str] = &[
 #[cfg(target_os = "macos")]
 pub const INSTALL_SCRIPT: &str = include_str!("./scripts/macos-install.sh");
 
+#[cfg(target_os = "linux")]
+pub const INSTALL_SCRIPT: &str = include_str!("./scripts/linux-install.sh");
+
+#[cfg(target_os = "windows")]
+pub const INSTALL_SCRIPT: &str = include_str!("./scripts/install.bat");
+
 lazy_static!{
 	static ref INSTALL_RESULT: Mutex<Option<i32>> = Mutex::new(None);
 }

@@ -14,7 +14,6 @@ fn save_tmp_file(content: &str) -> PathBuf {
 	p.to_path_buf()
 }
 
-#[cfg(target_os = "macos")]
 pub fn check_dependencies() -> bool {
 	// Check if Xcode Command Line Tools is installed
 	let git_check = Command::new("git").arg("--version").output().unwrap();
@@ -38,30 +37,6 @@ pub fn check_dependencies() -> bool {
 	}
 
 	true
-}
-
-#[cfg(target_os = "windows")]
-pub fn check_dependencies() {
-	// Check if Xcode Command Line Tools is installed
-	let git_check = Command::new("git").arg("--version").output().unwrap();
-	let git_result = String::from_utf8(git_check.stdout).unwrap();
-	if !git_result.contains("git version") {
-		set_install_result(Some(44));
-		return;
-	}
-	// Check if commands in PYTHON can be run
-	let mut python_check_flag = false;
-	for py in PYTHON {
-		if Command::new(py).arg("--version").output().is_ok() {
-			python_check_flag = true;
-			break;
-		}
-	}
-
-	if !python_check_flag {
-		set_install_result(Some(45));
-		return;
-	}
 }
 
 #[cfg(target_os = "macos")]
