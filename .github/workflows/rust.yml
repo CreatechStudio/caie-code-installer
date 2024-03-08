@@ -60,7 +60,7 @@ jobs:
       with:
         path: target/${{matrix.config.rust_target}}/release/caie-code-installer.exe
         retention-days: 7
-        name: caie-code-installer-${{matrix.config.rust_target}}-${{steps.add-target.outputs.commitHash}}
+        name: cci-${{matrix.config.rust_target}}-${{steps.add-target.outputs.commitHash}}
 
     - uses: actions/upload-artifact@v4.3.1
       name: Upload (macOS & Linux) Artifact
@@ -68,4 +68,4 @@ jobs:
       with:
         path: target/${{matrix.config.rust_target}}/release/caie-code-installer
         retention-days: 7
-        name: caie-code-installer-${{matrix.config.rust_target}}-${{steps.add-target.outputs.commitHash}}
+        name: cci-${{matrix.config.rust_target}}-${{steps.add-target.outputs.commitHash}}
