@@ -56,12 +56,12 @@ jobs:
       name: Upload (Windows)
       if: ${{ matrix.config.os == 'windows-latest' }}
       with:
-        path: target/${{matrix.config.rust_target}}/caie-code-installer.exe
+        path: target/${{matrix.config.rust_target}}/release/caie-code-installer.exe
         retention-days: 7
 
     - uses: actions/upload-artifact@v4.3.1
       name: Upload (macOS & Linux)
       if: ${{ matrix.config.os != 'windows-latest' }}
       with:
-        path: target/${{matrix.config.rust_target}}/caie-code-installer
+        path: target/${{matrix.config.rust_target}}/release/caie-code-installer
         retention-days: 7
