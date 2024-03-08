@@ -3,6 +3,12 @@ use std::{process::ExitStatus, sync::Mutex};
 use lazy_static::lazy_static;
 
 pub const LICENSE: &str = include_str!("./assets/mpl-2.0.txt");
+pub const PYTHON : &[&str] = &[
+    "pypy3",
+    "pypy",
+    "python",
+    "python3",
+];
 
 #[cfg(target_os = "macos")]
 pub const INSTALL_SCRIPT: &str = include_str!("./scripts/macos-install.sh");

@@ -61,10 +61,14 @@ impl eframe::App for Installer {
 			).min_size(install_bt_size);
 			if ui.add(bt).clicked() {
 				if self.accept_license {
-					self.toasts.info("Begin to install");
-					thread::spawn(|| {
-						funcs::install();
-					});
+					if funcs::check_dependencies() {
+						self.toasts.info("Begin to install");
+						thread::spawn(|| {
+							funcs::install();
+						});
+					} else {
+						self.toasts.error("Failed to check dependencies");
+					}
 				} else {
 					self.toasts.error("Accept license before installation");
 				}
