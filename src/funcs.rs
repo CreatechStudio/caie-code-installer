@@ -42,12 +42,11 @@ pub fn check_dependencies() -> bool {
 
 #[cfg(target_os = "windows")]
 pub fn check_dependencies() {
-	use std::process::ExitCode;
 	// Check if Xcode Command Line Tools is installed
 	let git_check = Command::new("git").arg("--version").output().unwrap();
 	let git_result = String::from_utf8(git_check.stdout).unwrap();
 	if !git_result.contains("git version") {
-		set_install_result(Some());
+		set_install_result(Some(44));
 		return;
 	}
 	// Check if commands in PYTHON can be run
@@ -60,7 +59,7 @@ pub fn check_dependencies() {
 	}
 
 	if !python_check_flag {
-		set_install_result(Some(ExitStatus::from_raw(45)));
+		set_install_result(Some(45));
 		return;
 	}
 }
