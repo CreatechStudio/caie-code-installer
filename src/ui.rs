@@ -86,7 +86,15 @@ impl eframe::App for Installer {
 			}
 		});
 		egui::CentralPanel::default().show(ctx, |ui| {
-			ui.checkbox(&mut self.accept_license, "Accept License");
+			ui.horizontal(|ui| {
+				ui.checkbox(&mut self.accept_license, "Accept All Licenses");
+				if ui.button("View Dependencies Licences").clicked() {
+					self.toasts.info("Opening licenses page");
+					opener::open("https://opensource.org/license/MIT").unwrap();
+					opener::open("https://opensource.org/license/GPL-2.0").unwrap();
+					opener::open("https://docs.python.org/3/license.html#licenses-and-acknowledgements-for-incorporated-software").unwrap();
+				}
+			});
 
 			ui.separator();
 
