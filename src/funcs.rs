@@ -15,7 +15,7 @@ fn save_tmp_file(content: &str) -> PathBuf {
 	let p = Path::new("/tmp/cpc-install.sh");
 
 	#[cfg(target_os = "windows")]
-	let p = Path::new("C:\\Windows\\Temp\\windows-install.bat");
+	let p = Path::new("%TEMP%\\windows-install.bat");
 
 	let mut f = File::create(p).unwrap();
 	f.write(content.as_bytes()).unwrap();
