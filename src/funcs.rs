@@ -8,13 +8,15 @@ use crate::constants::INSTALL_SCRIPT;
 use crate::constants::PYTHON;
 
 fn save_tmp_file(content: &str) -> PathBuf {
-	let p = Path::new("/tmp/cpc-install.sh");
+	let tmp_path = "/tmp/cpc-install.sh".to_string();
 
 	#[cfg(target_os = "windows")]
-	let p = Path::new(&format!(
-		"{:?}\\AppData\\Local\\Temp\\cpc-install.sh", 
-		dirs::home_dir()
-	));
+	let tmp_path = format!(
+		"{}\\AppData\\Local\\Temp\\cpc-install.sh",
+		dirs::home_dir().unwrap().to_str().unwrap()
+	);
+
+	let p = Path::new(&tmp_path);
 
 	let mut f = File::create(p).unwrap();
 	f.write(content.as_bytes()).unwrap();
