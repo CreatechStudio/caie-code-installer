@@ -12,7 +12,7 @@ fn save_tmp_file(content: &str) -> PathBuf {
 
 	#[cfg(target_os = "windows")]
 	let tmp_path = format!(
-		"{}\\AppData\\Local\\Temp\\cpc-install.sh",
+		"{}\\AppData\\Local\\Temp\\cpc-install.bat",
 		dirs::home_dir().unwrap().to_str().unwrap()
 	);
 
