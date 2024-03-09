@@ -1,6 +1,6 @@
 use std::thread;
 
-use eframe::egui::{self, include_image, text::LayoutJob, Button, Color32, Image, Label, Layout, RichText, ScrollArea, TextFormat, Vec2};
+use eframe::egui::{self, include_image, text::LayoutJob, Button, Color32, Image, Label, Layout, RichText, ScrollArea, Style, TextFormat, Vec2, Visuals};
 
 use egui_notify::Toasts;
 
@@ -23,6 +23,12 @@ impl Default for Installer {
 impl Installer {
 	pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
 		egui_extras::install_image_loaders(&cc.egui_ctx);
+		cc.egui_ctx.set_style(
+			Style {
+				visuals: Visuals::light(),
+				..Style::default()
+			}
+		);
 		Self::default()
 	}
 }
