@@ -12,8 +12,8 @@ fn save_tmp_file(content: &str) -> PathBuf {
 
 	#[cfg(target_os = "windows")]
 	let p = Path::new(&format!(
-		"C:\\Users\\{:?}\\AppData\\Local\\Temp\\cpc-install.sh", 
-		users::get_current_username().unwrap()
+		"{:?}\\AppData\\Local\\Temp\\cpc-install.sh", 
+		dirs::home_dir()
 	));
 
 	let mut f = File::create(p).unwrap();
