@@ -11,6 +11,9 @@ fn save_tmp_file(content: &str) -> PathBuf {
 	#[cfg(target_os = "macos")]
 	let p = Path::new("/tmp/cpc-install.sh");
 
+	#[cfg(target_os = "linux")]
+	let p = Path::new("/tmp/cpc-install.sh");
+
 	#[cfg(target_os = "windows")]
 	let p = Path::new("C:\\Windows\\Temp\\windows-install.bat");
 
