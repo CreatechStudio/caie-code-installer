@@ -8,7 +8,12 @@ use crate::constants::INSTALL_SCRIPT;
 use crate::constants::PYTHON;
 
 fn save_tmp_file(content: &str) -> PathBuf {
+	#[cfg(target_os = "macos")]
 	let p = Path::new("/tmp/cpc-install.sh");
+
+	#[cfg(target_os = "windows")]
+	let p = Path::new("C:\\Windows\\Temp\\windows-install.bat");
+
 	let mut f = File::create(p).unwrap();
 	f.write(content.as_bytes()).unwrap();
 	p.to_path_buf()
