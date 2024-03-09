@@ -17,7 +17,7 @@ pub const INSTALL_SCRIPT: &str = include_str!("./scripts/macos-install.sh");
 pub const INSTALL_SCRIPT: &str = include_str!("./scripts/linux-install.sh");
 
 #[cfg(target_os = "windows")]
-pub const INSTALL_SCRIPT: &str = include_str!("./scripts/install.bat");
+pub const INSTALL_SCRIPT: &str = include_str!("./scripts/windows-install.bat");
 
 lazy_static!{
 	static ref INSTALL_RESULT: Mutex<Option<i32>> = Mutex::new(None);
