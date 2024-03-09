@@ -2,6 +2,8 @@
 name = "caie-code-installer"
 version = "0.1.0"
 edition = "2021"
+author = ["Iewnfod", "lightumcc"]
+description = "An installer of CAIE Code (cpc)."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,6 +12,13 @@ lto = true
 codegen-units = 1
 opt-level = 'z'
 strip = true
+
+[package.metadata.bundle]
+name = "CAIE Code Installer"
+identifier = "com.iewnfod.cpc-installer"
+icon = ["assets/cpc.png"]
+version = "1.0.0"
+copyright = "Copyright (c) 2024-Now Iewnfod & lightumcc. All rights reserved."
 
 [dependencies]
 dirs = "5.0.1"

@@ -51,6 +51,10 @@ jobs:
         rustup target add ${{matrix.config.rust_target}}
         echo "commitHash=${GITHUB_SHA:0:9}" >> $GITHUB_OUTPUT
 
+    - name: Add bundle tool
+      run: |
+        cargo install cargo-bundle
+
     - name: Build
       run: cargo build --release --target ${{matrix.config.rust_target}}
 
