@@ -18,3 +18,4 @@ egui_extras = { version = "0.26.2", features = ["all_loaders"] }
 image = { version = "0.24.9", features = ["png"] }
 lazy_static = "1.4.0"
 opener = "0.6.1"
+users = "0.11.0"
