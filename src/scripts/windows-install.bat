@@ -28,15 +28,7 @@ REM 权限设置
 takeown /f "%current_dir%" /r /d y >nul 2>&1
 icacls "%current_dir%" /grant %username%:F /t >nul 2>&1
 
-REM 检查处理器架构
-IF "%PROCESSOR_ARCHITECTURE%"=="ARM64" (
-    mklink /h "C:\Users\%username%\AppData\Local\Microsoft\WindowsApps\cpc" "%current_dir%\bin\cpc_arm.exe" || exit /b 4
-) ELSE (
-    IF "%PROCESSOR_ARCHITEW6432%"=="ARM64" (
-        mklink /h "C:\Users\%username%\AppData\Local\Microsoft\WindowsApps\cpc" "%current_dir%\bin\cpc_arm.exe" || exit /b 4
-    ) ELSE (
-        mklink /h "C:\Users\%username%\AppData\Local\Microsoft\WindowsApps\cpc" "%current_dir%\bin\cpc.exe" || exit /b 4
-    )
-)
+for /f "tokens=2* delims= " %%f IN ('reg query HKCU\Environment /v PATH ^| findstr /i path') do set oldVal=%%g
+setx PATH "%oldVal%;%USERPROFILE%\.cpc\bin"
 
 exit /b 0
