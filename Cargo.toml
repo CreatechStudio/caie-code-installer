@@ -14,7 +14,7 @@ opt-level = 'z'
 strip = true
 
 [package.metadata.bundle]
-name = "CAIE Code Installer"
+name = "CAIE-Code-Installer"
 identifier = "com.iewnfod.cpc-installer"
 icon = ["assets/cpc.png"]
 version = "1.0.0"

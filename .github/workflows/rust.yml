@@ -21,10 +21,6 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - os: ubuntu-latest
-            rust_target: x86_64-unknown-linux-gnu
-            ext: ''
-            args: ''
           - os: macos-latest
             rust_target: x86_64-apple-darwin
             ext: ''
@@ -56,20 +52,20 @@ jobs:
         cargo install cargo-bundle
 
     - name: Build
-      run: cargo build --release --target ${{matrix.config.rust_target}}
+      run: cargo bundle --release --target ${{matrix.config.rust_target}}
 
     - uses: actions/upload-artifact@v4.3.1
       name: Upload Windows Artifact
       if: ${{ matrix.config.os == 'windows-latest' }}
       with:
-        path: target/${{matrix.config.rust_target}}/release/caie-code-installer.exe
+        path: target/${{matrix.config.rust_target}}/release/bundle//CAIE-Code-Installer.exe
         retention-days: 7
         name: cci-${{matrix.config.rust_target}}-${{steps.add-target.outputs.commitHash}}
 
     - uses: actions/upload-artifact@v4.3.1
-      name: Upload (macOS & Linux) Artifact
-      if: ${{ matrix.config.os != 'windows-latest' }}
+      name: Upload macOS Artifact
+      if: ${{ matrix.config.os == 'macos-latest' }}
       with:
-        path: target/${{matrix.config.rust_target}}/release/caie-code-installer
+        path: target/${{matrix.config.rust_target}}/release/bundle/osx/CAIE-Code-Installer.app
         retention-days: 7
         name: cci-${{matrix.config.rust_target}}-${{steps.add-target.outputs.commitHash}}
